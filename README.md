@@ -101,6 +101,32 @@ La IP del servidor se configura en
 > La configuración de red prohíbe tráfico HTTP en release y lo permite únicamente
 > en debug, para seguir probando con el emulador o con una IP de la red local.
 
+### 4. Firmar el release (opcional)
+
+Sin configuración adicional, `assembleRelease` genera `app-release-unsigned.apk`.
+Para generar un APK **firmado**, crea tu propio keystore (guárdalo fuera del repo):
+
+```bash
+keytool -genkeypair -v -keystore comedor.jks -alias comedor \
+  -keyalg RSA -keysize 2048 -validity 10000
+```
+
+Y define estas variables de entorno antes de compilar:
+
+```powershell
+$env:COMEDOR_KEYSTORE = "C:\ruta\comedor.jks"
+$env:COMEDOR_STORE_PASSWORD = "tu-contraseña"
+$env:COMEDOR_KEY_PASSWORD = "tu-contraseña"
+$env:COMEDOR_KEY_ALIAS = "comedor"   # opcional
+.\gradlew.bat assembleRelease
+```
+
+Con las variables definidas se genera `app-release.apk` firmado; sin ellas el
+build sigue funcionando y produce el APK sin firmar. El proyecto ignora
+`*.jks`, `*.keystore` y `keystore.properties`, así que la clave nunca se sube.
+Conserva el keystore y sus contraseñas: perderlos impide actualizar una app
+ya publicada con esa firma.
+
 ## Usuarios de prueba
 
 | Rol | Código / DNI | Clave |

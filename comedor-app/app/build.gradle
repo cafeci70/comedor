@@ -5,6 +5,16 @@ apply plugin: 'com.android.application'
 def prodBaseUrl = System.getenv('COMEDOR_API_URL') ?: (project.findProperty('API_BASE_URL') ?: 'https://comedor.example.com')
 def devBaseUrl = System.getenv('COMEDOR_API_URL_DEBUG') ?: (project.findProperty('API_BASE_URL_DEBUG') ?: 'http://10.0.2.2')
 
+// Firma del release (opcional). Sin estas variables el build genera
+// app-release-unsigned.apk; con ellas genera app-release.apk firmado.
+// La clave nunca se guarda en el repositorio.
+def keystorePath = System.getenv('COMEDOR_KEYSTORE')
+def storePass = System.getenv('COMEDOR_STORE_PASSWORD')
+def keyPass = System.getenv('COMEDOR_KEY_PASSWORD')
+def ksAlias = System.getenv('COMEDOR_KEY_ALIAS') ?: 'comedor'
+def signingReady = keystorePath && storePass && keyPass && file(keystorePath).exists()
+logger.lifecycle(signingReady ? 'Comedor: firma de release ACTIVADA' : 'Comedor: firma de release desactivada (APK sin firmar)')
+
 android {
     namespace 'com.ejemplo.comedor'
     compileSdk 34
@@ -23,6 +33,17 @@ android {
         buildConfig true
     }
 
+    signingConfigs {
+        if (signingReady) {
+            release {
+                storeFile file(keystorePath)
+                storePassword storePass
+                keyAlias ksAlias
+                keyPassword keyPass
+            }
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField "String", "API_BASE_URL", "\"${devBaseUrl}\""
@@ -30,6 +51,9 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (signingReady) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
