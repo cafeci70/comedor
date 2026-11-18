@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmento_alumno.fragmento_alumno_perfil">
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="414dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:background="#7FD5C5"
+        android:gravity="center_horizontal"
+        android:text="Mis datos"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/a_nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="50dp"
+        android:text="Nombre_alumno"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/a_nombre_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:text="Nombre :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/a_apellido_p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="90dp"
+        android:text="Carrera_profesional"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_apellido_p_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="90dp"
+        android:text="Apellido_P :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/a_apellido_m"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="130dp"
+        android:text="Codigo_alumno"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_apellido_m_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="130dp"
+        android:text="Apellido_M:"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/a_correo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="170dp"
+        android:text="Correo_electronico"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_correo_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="170dp"
+        android:text="Correo       :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_celular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="210dp"
+        android:text="N° Cel/Telf"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/a_celular_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="210dp"
+        android:text="Cel/Telf    :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_saldo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="250dp"
+        android:text="Datos si es becado o no"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_saldo_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="250dp"
+        android:text="Saldo        :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/a_beca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="290dp"
+        android:text="Saldo disponible"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/a_beca_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="290dp"
+        android:text="Becado    :"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp" />
+
+</FrameLayout>

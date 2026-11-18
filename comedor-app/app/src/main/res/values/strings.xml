@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Tickets Comedor</string>
+    <string name="acerca_de_texto">Tickets Comedor - proyecto base para la venta de tickets de almuerzo y cena.</string>
+
+    <string name="title_activity_menu_alumno">Menu principal</string>
+    <string name="navigation_drawer_open">Abrir navegacion</string>
+    <string name="navigation_drawer_close">Cerrar navegacion</string>
+    <string name="nav_header_title">Universidad Ejemplo</string>
+
+
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Cerrar sesion</string>
+
+
+    <string name="title_activity_menu_nutricionista">Menu principal</string>
+    <string name="title_activity_menu_secretaria">Menu principal</string>
+    <string name="sesion_invalida">SESIÓN INVÁLIDA</string>
+    <string name="no_hay_venta">NO HAY VENTA</string>
+    <string name="sin_stock">SIN STOCK</string>
+    <string name="btn_comprar">Comprar</string>
+    <string name="no_existe">NO EXISTE</string>
+</resources>

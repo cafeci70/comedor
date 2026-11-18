@@ -1,0 +1,3 @@
+# Logs y datos de sesión del servidor
+*.log
+sessions/

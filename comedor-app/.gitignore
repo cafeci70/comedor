@@ -1,0 +1,25 @@
+# Gradle / salidas de compilación
+.gradle/
+/build/
+/app/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+
+# Configuración local (ruta del SDK, específica de cada máquina)
+local.properties
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+/out/
+
+# Firmas y secretos de release
+*.jks
+*.keystore
+keystore.properties
+
+# Otros
+*.hprof
