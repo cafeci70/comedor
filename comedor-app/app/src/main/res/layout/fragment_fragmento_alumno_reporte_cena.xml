@@ -4,19 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgScreen"
     android:orientation="vertical"
     tools:context=".fragmento_alumno.fragmento_alumno_reporte_cena">
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#7FD5C5"
-        android:gravity="center_horizontal"
-        android:paddingVertical="8dp"
-        android:text="Ticket de cena"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/header_text_size" />
+        style="@style/ComedorSectionHeader"
+        android:text="Ticket de cena" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,6 +28,7 @@
             android:paddingBottom="@dimen/screen_padding_vertical">
 
             <LinearLayout
+                style="@style/ComedorCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -44,111 +40,125 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/s_nombre_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="N° Ticket :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:text="N° Ticket"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/r_numero_ticket"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Null"
+                        android:background="@drawable/bg_badge_soft"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="4dp"
+                        android:text="---"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="19sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/s_apellido_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Fecha :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Fecha"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/r_fecha_ticket"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Null"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="---"
+                        android:textColor="@color/textPrimary"
                         android:textSize="@dimen/body_text_size" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/s_direccion_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Alumno :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Alumno"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/r_nombre_alumno"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Null"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="---"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="@dimen/body_text_size"
+                        android:textStyle="bold" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/s_celular_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Menu :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Menú"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/r_menu"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Null"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:lineSpacingExtra="4dp"
+                        android:text="---"
+                        android:textColor="@color/textPrimary"
                         android:textSize="@dimen/body_text_size" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/img_qr"
-                    android:layout_width="@dimen/qr_image_size"
-                    android:layout_height="@dimen/qr_image_size"
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="Código QR del ticket"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:background="@drawable/bg_qr_frame"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:id="@+id/img_qr"
+                        android:layout_width="@dimen/qr_image_size"
+                        android:layout_height="@dimen/qr_image_size"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="Código QR del ticket"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_launcher_background" />
+
+                </FrameLayout>
 
             </LinearLayout>
 

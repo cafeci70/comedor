@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FFFFFF"
+    android:background="@color/bgScreen"
     android:fillViewport="true"
     tools:context=".MainActivity">
 
@@ -17,80 +17,86 @@
         android:paddingBottom="@dimen/screen_padding_vertical">
 
         <LinearLayout
+            style="@style/ComedorCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:padding="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="@dimen/content_max_width">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Iniciar Sesion"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/header_text_size"
-                android:textStyle="bold" />
-
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="@dimen/login_logo_width"
                 android:layout_height="@dimen/login_logo_height"
-                android:layout_marginTop="@dimen/form_section_spacing"
                 android:contentDescription="@string/app_name"
                 app:srcCompat="@mipmap/indice" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/form_section_spacing"
-                android:text="Codigo"
+                android:layout_marginTop="12dp"
+                android:text="Tickets Comedor"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/label_text_size" />
+                android:textSize="@dimen/header_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Iniciar sesión con tu código o DNI"
+                android:textColor="@color/textSecondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/ComedorFieldLabel"
+                android:layout_marginTop="24dp"
+                android:text="Código / DNI" />
 
             <EditText
                 android:id="@+id/text_codigo"
+                style="@style/ComedorInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:ems="10"
-                android:gravity="center_horizontal"
+                android:hint="Ej. 0000000001"
                 android:inputType="number"
                 android:maxLength="10"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/ComedorFieldLabel"
                 android:layout_marginTop="@dimen/form_section_spacing"
-                android:text="Clave"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/label_text_size" />
+                android:text="Clave" />
 
             <EditText
                 android:id="@+id/text_clave"
+                style="@style/ComedorInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:ems="10"
-                android:gravity="center_horizontal"
+                android:hint="Ingresa tu clave"
                 android:inputType="numberPassword"
                 android:maxLength="10"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/btn_ingresar"
-                android:layout_width="@dimen/button_width"
-                android:layout_height="56dp"
+                style="@style/ComedorButtonPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Ingresar"
-                android:textSize="18sp" />
+                android:text="Ingresar" />
 
         </LinearLayout>
 

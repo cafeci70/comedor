@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8BD8D0</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#00695C</color>
+    <color name="colorPrimaryDark">#004D40</color>
+    <color name="colorAccent">#00897B</color>
+
+    <color name="bgScreen">#F4F7F6</color>
+    <color name="bgCard">#FFFFFF</color>
+    <color name="bgSurfaceSoft">#E6F4F1</color>
+    <color name="bgInput">#F8FBFB</color>
+    <color name="bgInputDisabled">#EEF4F3</color>
+
+    <color name="borderCard">#D5E3E0</color>
+    <color name="borderInput">#B8CECA</color>
+    <color name="dividerSoft">#E6EFED</color>
+
+    <color name="textPrimary">#162B28</color>
+    <color name="textSecondary">#546E6A</color>
+    <color name="textOnPrimary">#FFFFFF</color>
+
+    <color name="btnPrimaryPressed">#004D40</color>
+    <color name="btnPrimaryDisabled">#B0C4C1</color>
+    <color name="btnSecondaryPressed">#D0EAE4</color>
 </resources>

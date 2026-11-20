@@ -4,19 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgScreen"
     android:orientation="vertical"
     tools:context=".fragmento_alumno.fragmento_alumno_perfil">
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#7FD5C5"
-        android:gravity="center_horizontal"
-        android:paddingVertical="8dp"
-        android:text="Mis datos"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/header_text_size" />
+        style="@style/ComedorSectionHeader"
+        android:text="Mis datos" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,6 +28,7 @@
             android:paddingBottom="@dimen/screen_padding_vertical">
 
             <LinearLayout
+                style="@style/ComedorCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -44,16 +40,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_nombre_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Nombre :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:text="Nombre"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -63,23 +59,24 @@
                         android:layout_weight="1"
                         android:text="Nombre_alumno"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
+                        android:textSize="19sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_apellido_p_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Apellido P. :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Apellido P."
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/a_apellido_p"
@@ -87,23 +84,24 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Apellido_paterno"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/textPrimary"
                         android:textSize="@dimen/body_text_size" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_apellido_m_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Apellido M. :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Apellido M."
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/a_apellido_m"
@@ -111,23 +109,24 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Apellido_materno"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/textPrimary"
                         android:textSize="@dimen/body_text_size" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_correo_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Correo :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Correo"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/a_correo"
@@ -135,23 +134,24 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Correo_electronico"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/textPrimary"
                         android:textSize="@dimen/body_text_size" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_celular_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Cel/Telf :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Celular"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/a_celular"
@@ -159,56 +159,64 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="N° Cel/Telf"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/textPrimary"
                         android:textSize="@dimen/body_text_size" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_saldo_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Saldo :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Saldo (S/.)"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/a_saldo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Saldo disponible"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="0"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/a_beca_"
-                        android:layout_width="120dp"
+                        android:layout_width="116dp"
                         android:layout_height="wrap_content"
-                        android:text="Becado :"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:text="Becado"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/a_beca"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="si / no"
+                        android:background="@drawable/bg_badge_soft"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="no"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
             </LinearLayout>

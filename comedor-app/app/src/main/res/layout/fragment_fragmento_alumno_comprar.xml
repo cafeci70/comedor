@@ -4,19 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgScreen"
     android:orientation="vertical"
     tools:context=".fragmento_alumno.fragmento_alumno_comprar">
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#7FD5C5"
-        android:gravity="center_horizontal"
-        android:paddingVertical="8dp"
-        android:text="Ticket de almuerzo"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/header_text_size" />
+        style="@style/ComedorSectionHeader"
+        android:text="Ticket de almuerzo" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,6 +28,7 @@
             android:paddingBottom="@dimen/screen_padding_vertical">
 
             <LinearLayout
+                style="@style/ComedorCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -44,7 +40,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -53,27 +48,31 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Stock"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="Stock disponible"
+                        android:textColor="@color/textSecondary"
                         android:textSize="@dimen/body_text_size" />
 
                     <TextView
                         android:id="@+id/stock_ticket_almuerzo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
+                        android:background="@drawable/bg_badge_soft"
+                        android:gravity="center"
                         android:minWidth="64dp"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="6dp"
                         android:text="00"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
 
+                <View style="@style/ComedorDivider" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -82,28 +81,28 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Consumo"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="Cantidad"
+                        android:textColor="@color/textSecondary"
                         android:textSize="@dimen/body_text_size" />
 
                     <EditText
                         android:id="@+id/editText1"
-                        android:layout_width="wrap_content"
+                        style="@style/ComedorInput"
+                        android:layout_width="84dp"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:gravity="end"
+                        android:gravity="center"
                         android:inputType="none"
-                        android:minWidth="64dp"
-                        android:text="1"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:paddingVertical="8dp"
+                        android:text="1" />
 
                 </LinearLayout>
+
+                <View style="@style/ComedorDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/form_section_spacing"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -112,34 +111,31 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Monto pagar (S/.)"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="Monto a pagar (S/.)"
+                        android:textColor="@color/textSecondary"
                         android:textSize="@dimen/body_text_size" />
 
                     <EditText
                         android:id="@+id/editText2"
-                        android:layout_width="wrap_content"
+                        style="@style/ComedorInput"
+                        android:layout_width="84dp"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:gravity="end"
+                        android:gravity="center"
                         android:inputType="none"
-                        android:minWidth="64dp"
+                        android:paddingVertical="8dp"
                         android:text="1.00"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/body_text_size" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_comprar_almuerzo"
-                    android:layout_width="@dimen/button_width"
+                    style="@style/ComedorButtonPrimary"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="32dp"
-                    android:background="#7FD5C5"
-                    android:text="Comprar"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp" />
+                    android:layout_marginTop="24dp"
+                    android:text="Comprar" />
 
             </LinearLayout>
 

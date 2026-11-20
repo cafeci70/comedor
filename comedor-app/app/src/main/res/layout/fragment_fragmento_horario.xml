@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgScreen"
     android:fillViewport="true"
     tools:context=".fragmento_general.fragmento_horario">
 
@@ -15,18 +16,26 @@
         android:paddingEnd="@dimen/screen_padding_horizontal"
         android:paddingBottom="@dimen/screen_padding_vertical">
 
-        <ImageView
-            android:id="@+id/imageView3"
+        <FrameLayout
+            style="@style/ComedorCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/p2"
+            android:padding="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="@dimen/content_max_width" />
+            app:layout_constraintWidth_max="@dimen/content_max_width">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/p2" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,31 +11,31 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@mipmap/icono_perfil"
-            android:title="Perfil" />
+            android:title="Mi perfil" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@mipmap/icono_menu"
-            android:title="Menu universitario" />
+            android:title="Menú semanal" />
         <item
             android:id="@+id/nav_tools"
             android:icon="@mipmap/icono_comprar"
-            android:title="Comprar ticket almuerzo" />
+            android:title="Comprar almuerzo" />
         <item
             android:id="@+id/nav_tools2"
             android:icon="@mipmap/icono_comprar"
-            android:title="Comprar ticket cena" />
+            android:title="Comprar cena" />
     </group>
 
-    <item android:title="Informacion">
+    <item android:title="Información">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@mipmap/icono_ayuda"
-                android:title="Reglamento"/>
+                android:title="Reglamento" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@mipmap/icono_acerca_de"
-                android:title="Horario"/>
+                android:title="Horario de atención" />
         </menu>
     </item>
 
