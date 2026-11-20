@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -85,8 +86,12 @@ public class fragmento_secretaria_horario extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), "OPERACION EXITOSA", Toast.LENGTH_SHORT).show();
-            //LIMPIAMOS LOS CAMPOS DESPUES DE RECARGAR
+            String msg = ApiResponseHelper.extractMessage(response, "OPERACION EXITOSA");
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            if (!ApiResponseHelper.isSuccessResponse(response)) {
+                return;
+            }
+            //LIMPIAMOS LOS CAMPOS DESPUES DE REGISTRAR
             desayuno.setText("");
             almuerzo_en.setText("");
             almuerzo_post.setText("");
@@ -100,7 +105,7 @@ public class fragmento_secretaria_horario extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo registrar el menú"), Toast.LENGTH_SHORT).show();
         }) {
             @Override
             protected Map<String, String> getParams() {

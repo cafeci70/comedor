@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -52,8 +53,13 @@ public class fragmento_secretaria_alumno_saldo_editar extends Fragment {
         btn_cancelar.setOnClickListener(view -> cargar_fragmento(new fragmento_secretaria_reporte_alumno()));
 
         btn_recargar.setOnClickListener(view -> {
-            if (alumno_saldo.getText().toString().trim().isEmpty()) {
+            String saldoTexto = alumno_saldo.getText().toString().trim();
+            if (saldoTexto.isEmpty()) {
                 Toast.makeText(getContext(), "Ingrese el saldo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (Variables_globales.parseIntOrDefault(saldoTexto, -1) < 0) {
+                Toast.makeText(getContext(), "El saldo no puede ser negativo", Toast.LENGTH_SHORT).show();
                 return;
             }
             ejecutar_saldo_editar(ip.getIp() + "/comedor-api/Secretaria/acciones/accion_alumno_saldo_editar.php");
@@ -75,14 +81,17 @@ public class fragmento_secretaria_alumno_saldo_editar extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), "OPERACION EXITOSA", Toast.LENGTH_SHORT).show();
-            cargar_fragmento(new fragmento_secretaria_reporte_alumno());
+            String msg = ApiResponseHelper.extractMessage(response, "OPERACION EXITOSA");
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            if (ApiResponseHelper.isSuccessResponse(response)) {
+                cargar_fragmento(new fragmento_secretaria_reporte_alumno());
+            }
 
         }, error -> {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo actualizar el saldo"), Toast.LENGTH_SHORT).show();
         }) {
             @Override
             protected Map<String, String> getParams() {

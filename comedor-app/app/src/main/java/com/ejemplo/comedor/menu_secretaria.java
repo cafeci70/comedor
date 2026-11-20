@@ -105,10 +105,7 @@ public class menu_secretaria extends AppCompatActivity implements NavigationView
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Variables_globales.clearSession();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            SessionLogoutHelper.logout(this);
             return true;
         }
 

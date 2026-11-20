@@ -89,8 +89,9 @@ function obtener_resumen_ventas($conn, $fecha)
  */
 function renderizar_grafico_torta($containerId, $titulo, $becados, $noBecados)
 {
-    $containerJs = json_encode($containerId);
-    $tituloJs = json_encode($titulo, JSON_UNESCAPED_UNICODE);
+    $jsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+    $containerJs = json_encode($containerId, $jsonFlags);
+    $tituloJs = json_encode($titulo, $jsonFlags);
     $becadosInt = (int) $becados;
     $noBecadosInt = (int) $noBecados;
     ?>

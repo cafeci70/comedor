@@ -20,7 +20,7 @@ $fechaEscapada = htmlspecialchars($fechaParam, ENT_QUOTES, 'UTF-8');
     </style>
 </head>
 <body>
-    <p align="right"><a href="logout.php">Cerrar sesión</a></p>
+    <?php reportes_render_logout_link(); ?>
     <h2>Reportes de Venta de Tickets</h2>
     <ul>
         <li><a href="reporte_almuerzo_cena.php?fecha=<?php echo urlencode($fechaParam); ?>">Resumen diario (Almuerzo y Cena - <?php echo $fechaEscapada; ?>)</a></li>

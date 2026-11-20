@@ -10,7 +10,9 @@ $resumen = obtener_resumen_ventas($conn, $fecha);
 $conn->close();
 
 $cen = $resumen['cena'];
-$tituloCena = 'Compra del ' . $resumen['fecha'] . ' - Cena: ' . $cen['nombre']
+$fechaEsc = htmlspecialchars($resumen['fecha'], ENT_QUOTES, 'UTF-8');
+$nombreCenEsc = htmlspecialchars($cen['nombre'], ENT_QUOTES, 'UTF-8');
+$tituloCena = 'Compra del ' . $fechaEsc . ' - Cena: ' . $nombreCenEsc
     . '<br>TOTAL DE TICKETS VENDIDOS: ' . $cen['total']
     . '<br>Becados: ' . $cen['becados']
     . '<br>No Becados: ' . $cen['nobecados'];
@@ -24,7 +26,7 @@ $tituloCena = 'Compra del ' . $resumen['fecha'] . ' - Cena: ' . $cen['nombre']
     <title>REPORTES - CENA</title>
 </head>
 <body>
-<p align="right"><a href="logout.php">Cerrar sesión</a></p>
+<?php reportes_render_logout_link(); ?>
 <script src="Highcharts-7.1.2/code/highcharts.js"></script>
 <script src="Highcharts-7.1.2/code/modules/exporting.js"></script>
 <script src="Highcharts-7.1.2/code/modules/export-data.js"></script>

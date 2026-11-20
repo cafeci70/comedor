@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../db_helper.php';
 
+require_api_role('secretaria');
+
 $conn = get_db_connection();
 $stock = fetch_all_prepared(
     $conn,

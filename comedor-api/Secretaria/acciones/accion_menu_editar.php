@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../db_helper.php';
 
+require_http_method('POST');
+require_api_role('secretaria');
+
 $menu_id          = require_int_param('POST', 'id_menu');
 $fecha            = require_date_param('POST', 'fecha');
 $desayuno         = require_param('POST', 'desayuno');
@@ -14,6 +17,17 @@ $cena             = require_param('POST', 'cena');
 $cena_bebida      = require_param('POST', 'cena_bebida');
 
 $conn = get_db_connection();
+$duplicados = fetch_all_prepared(
+    $conn,
+    'SELECT menu_id FROM menu WHERE menu_fecha = ? AND menu_id <> ? LIMIT 1',
+    'si',
+    array($fecha, $menu_id)
+);
+if (!empty($duplicados)) {
+    $conn->close();
+    send_json_error('Ya existe otro menú registrado para esa fecha', 409);
+}
+
 $affected = execute_prepared(
     $conn,
     'UPDATE menu
@@ -29,4 +43,4 @@ $affected = execute_prepared(
 );
 $conn->close();
 
-send_json(array('ok' => true, 'affected' => $affected));
+send_json(array('ok' => true, 'mensaje' => 'Menú actualizado correctamente', 'affected' => $affected));

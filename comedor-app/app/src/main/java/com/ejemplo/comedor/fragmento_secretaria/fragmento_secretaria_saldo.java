@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -175,7 +176,11 @@ public class fragmento_secretaria_saldo extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), "OPERACION EXITOSA" + response, Toast.LENGTH_SHORT).show();
+            String msg = ApiResponseHelper.extractMessage(response, "OPERACION EXITOSA");
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            if (!ApiResponseHelper.isSuccessResponse(response)) {
+                return;
+            }
             //LIMPIAMOS LOS CAMPOS DESPUES DE RECARGAR
             edi_alum_codigo.setText("");
             edi_saldo.setText("");
@@ -184,7 +189,7 @@ public class fragmento_secretaria_saldo extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo realizar la recarga"), Toast.LENGTH_SHORT).show();
         }) {
             @Override
             protected Map<String, String> getParams() {

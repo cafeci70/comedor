@@ -34,12 +34,13 @@ CREATE TABLE `alumnos` (
   `alum_apellido_pa` varchar(150) DEFAULT NULL,
   `alum_apellido_ma` varchar(150) DEFAULT NULL,
   `alum_codigo` varchar(11) DEFAULT NULL,
-  `alum_pass` varchar(11) DEFAULT NULL,
+  `alum_pass` varchar(255) DEFAULT NULL,
   `alum_correo` varchar(100) DEFAULT NULL,
   `alum_celular` varchar(11) DEFAULT NULL,
   `alum_saldo` int(11) DEFAULT NULL,
   `alum_beca` enum('si','no') DEFAULT NULL,
-  PRIMARY KEY (`alum_id`)
+  PRIMARY KEY (`alum_id`),
+  UNIQUE KEY `uk_alumnos_codigo` (`alum_codigo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -63,15 +64,18 @@ DROP TABLE IF EXISTS `compra`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `compra` (
   `comp_id` int(11) NOT NULL AUTO_INCREMENT,
-  `comp_qr` varchar(10) DEFAULT NULL,
+  `comp_qr` varchar(64) DEFAULT NULL,
   `comp_fecha` date DEFAULT NULL,
   `comp_almuerzo` enum('si','no') DEFAULT NULL,
   `comp_cena` enum('si','no') DEFAULT NULL,
   `alum_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   PRIMARY KEY (`comp_id`),
+  UNIQUE KEY `uk_compra_alumno_menu` (`alum_id`,`menu_id`),
   KEY `fk_alumnos_has_menu_menu1_idx` (`menu_id`),
-  KEY `fk_alumnos_has_menu_alumnos_idx` (`alum_id`)
+  KEY `fk_alumnos_has_menu_alumnos_idx` (`alum_id`),
+  CONSTRAINT `fk_compra_alumnos` FOREIGN KEY (`alum_id`) REFERENCES `alumnos` (`alum_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_compra_menu` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,7 +114,8 @@ CREATE TABLE `menu` (
   `menu_cen_bebida` varchar(60) DEFAULT NULL,
   `menu_cen_cont` int(11) DEFAULT NULL,
   `menu_cen_contbeca` int(11) DEFAULT NULL,
-  PRIMARY KEY (`menu_id`)
+  PRIMARY KEY (`menu_id`),
+  UNIQUE KEY `uk_menu_fecha` (`menu_fecha`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -165,9 +170,10 @@ CREATE TABLE `usuario` (
   `usu_direccion` varchar(150) DEFAULT NULL,
   `usu_celular` varchar(11) DEFAULT NULL,
   `usu_codigo_dni` varchar(8) DEFAULT NULL,
-  `usu_contrasena` varchar(8) DEFAULT NULL,
+  `usu_contrasena` varchar(255) DEFAULT NULL,
   `usu_correo` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`usu_id`)
+  PRIMARY KEY (`usu_id`),
+  UNIQUE KEY `uk_usuario_dni` (`usu_codigo_dni`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -404,16 +410,16 @@ DELIMITER ;;
 CREATE DEFINER=CURRENT_USER PROCEDURE `generar_recarga`(IN `alumcod` VARCHAR(12), IN `recarga` INT)
 BEGIN
 declare idal int default null;
-declare magnolia_me_ama char(5) default null;
+declare es_becado char(5) default null;
 declare continue handler for not found begin end;
 
-select alum_id, alum_beca into idal, magnolia_me_ama from alumnos where alum_codigo=alumcod limit 1;
+select alum_id, alum_beca into idal, es_becado from alumnos where alum_codigo=alumcod limit 1;
 
 if idal is null then
 select 'Alumno no encontrado' mensaje;
 elseif recarga is null or recarga <= 0 then
 select 'Monto de recarga inválido' mensaje;
-elseif magnolia_me_ama='no' then
+elseif es_becado='no' then
 UPDATE `alumnos` SET `alum_saldo` = alum_saldo+recarga WHERE `alum_id` = idal;
 select concat('Usted recargó ',recarga,if(recarga>1,' soles a su cuenta',' sol a su cuenta')) mensaje;
 else
@@ -498,6 +504,7 @@ declare saldo int default 0;
 declare stock_reg int default 0;
 declare stock_beca int default 0;
 declare ya_almuerzo char(5) default null;
+declare qr_token varchar(64) default null;
 declare continue handler for not found begin end;
 declare exit handler for sqlexception begin
     rollback;
@@ -522,6 +529,8 @@ else
     select comp_id, comp_almuerzo into compid, ya_almuerzo
     from compra where alum_id=idal and menu_id=menuid and comp_fecha=curdate() limit 1 for update;
 
+    set qr_token = UPPER(SUBSTRING(REPLACE(UUID(), '-', ''), 1, 16));
+
     if ya_almuerzo = 'si' then
         rollback;
         select 'Usted ya compró su almuerzo' mensaje;
@@ -532,9 +541,12 @@ else
         else
             if compid is null then
                 INSERT INTO `compra` (`comp_qr`,`comp_fecha`,`comp_almuerzo`,`comp_cena`,`alum_id`,`menu_id`)
-                VALUES ('####',curdate(),'si','no',idal,menuid);
+                VALUES (qr_token,curdate(),'si','no',idal,menuid);
             else
-                UPDATE `compra` SET `comp_almuerzo` = 'si' WHERE `comp_id` = compid;
+                UPDATE `compra`
+                SET `comp_almuerzo` = 'si',
+                    `comp_qr` = COALESCE(NULLIF(NULLIF(`comp_qr`, '####'), ''), qr_token)
+                WHERE `comp_id` = compid;
             end if;
             UPDATE `menu` SET `menu_alm_contbeca` = (menu_alm_contbeca-1) WHERE `menu_id` = menuid;
             commit;
@@ -550,9 +562,12 @@ else
         else
             if compid is null then
                 INSERT INTO `compra` (`comp_qr`,`comp_fecha`,`comp_almuerzo`,`comp_cena`,`alum_id`,`menu_id`)
-                VALUES ('####',curdate(),'si','no',idal,menuid);
+                VALUES (qr_token,curdate(),'si','no',idal,menuid);
             else
-                UPDATE `compra` SET `comp_almuerzo` = 'si' WHERE `comp_id` = compid;
+                UPDATE `compra`
+                SET `comp_almuerzo` = 'si',
+                    `comp_qr` = COALESCE(NULLIF(NULLIF(`comp_qr`, '####'), ''), qr_token)
+                WHERE `comp_id` = compid;
             end if;
             UPDATE `alumnos` SET `alum_saldo` = alum_saldo-1 WHERE `alum_id` = idal;
             UPDATE `menu` SET `menu_alm_cont` = (menu_alm_cont-1) WHERE `menu_id` = menuid;
@@ -586,7 +601,8 @@ declare becado char(5) default null;
 declare saldo int default 0;
 declare stock_reg int default 0;
 declare stock_beca int default 0;
-declare mag char(5) default null;
+declare ya_cena char(5) default null;
+declare qr_token varchar(64) default null;
 declare continue handler for not found begin end;
 declare exit handler for sqlexception begin
     rollback;
@@ -608,10 +624,12 @@ elseif menuid is null then
     rollback;
     select 'No hay menú registrado para hoy' mensaje;
 else
-    select comp_id, comp_cena into compid, mag
+    select comp_id, comp_cena into compid, ya_cena
     from compra where comp_fecha=curdate() and menu_id=menuid and alum_id=idal limit 1 for update;
 
-    if mag = 'si' then
+    set qr_token = UPPER(SUBSTRING(REPLACE(UUID(), '-', ''), 1, 16));
+
+    if ya_cena = 'si' then
         rollback;
         select 'Usted ya compró cena' mensaje;
     elseif becado = 'si' then
@@ -621,9 +639,12 @@ else
         else
             if compid is null then
                 INSERT INTO `compra`(`comp_qr`,`comp_fecha`,`comp_almuerzo`,`comp_cena`,`alum_id`,`menu_id`)
-                VALUES ('####',curdate(),'no','si',idal,menuid);
+                VALUES (qr_token,curdate(),'no','si',idal,menuid);
             else
-                UPDATE `compra` SET `comp_cena` = 'si' WHERE `comp_id` = compid;
+                UPDATE `compra`
+                SET `comp_cena` = 'si',
+                    `comp_qr` = COALESCE(NULLIF(NULLIF(`comp_qr`, '####'), ''), qr_token)
+                WHERE `comp_id` = compid;
             end if;
             UPDATE `menu` SET `menu_cen_contbeca` = (menu_cen_contbeca-1) WHERE `menu_id` = menuid;
             commit;
@@ -639,9 +660,12 @@ else
         else
             if compid is null then
                 INSERT INTO `compra`(`comp_qr`,`comp_fecha`,`comp_almuerzo`,`comp_cena`,`alum_id`,`menu_id`)
-                VALUES ('####',curdate(),'no','si',idal,menuid);
+                VALUES (qr_token,curdate(),'no','si',idal,menuid);
             else
-                UPDATE `compra` SET `comp_cena` = 'si' WHERE `comp_id` = compid;
+                UPDATE `compra`
+                SET `comp_cena` = 'si',
+                    `comp_qr` = COALESCE(NULLIF(NULLIF(`comp_qr`, '####'), ''), qr_token)
+                WHERE `comp_id` = compid;
             end if;
             UPDATE `alumnos` SET `alum_saldo` = alum_saldo-1 WHERE `alum_id` = idal;
             UPDATE `menu` SET `menu_cen_cont` = (menu_cen_cont-1) WHERE `menu_id` = menuid;
@@ -668,17 +692,28 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=CURRENT_USER PROCEDURE `registrar_menu`(IN `fecha` DATE, IN `desayuno` VARCHAR(100), IN `almen` VARCHAR(100), IN `almpostre` VARCHAR(100), IN `almuerzo` VARCHAR(100), IN `almbeb` VARCHAR(100), IN `cenaen` VARCHAR(100), IN `cenapos` VARCHAR(100), IN `cena` VARCHAR(100), IN `cenabeb` VARCHAR(100))
 BEGIN
-declare becados int  default(select stoc_becados from stock order by stoc_id desc limit 1);
+declare becados int default 0;
+declare existe int default 0;
+declare continue handler for not found set becados = 0;
 
-INSERT INTO `comedor`.`menu`
-(`menu_fecha`,`menu_desayuno`,`menu_des_cont`,`menu_alm_entrada`,`menu_alm_postre`,`menu_almuerzo`,`menu_alm_bebida`,
-`menu_alm_cont`,`menu_cen_entrada`,`menu_cen_postre`,`menu_cena`,`menu_cen_bebida`,`menu_cen_cont`,
-menu_alm_contbeca, menu_cen_contbeca)
-VALUES
-(fecha,desayuno,320,almen,almpostre,almuerzo,almbeb,(650-becados),
-cenaen,cenapos,cena,cenabeb,(360-becados),becados,becados);
+select count(*) into existe from menu where menu_fecha = fecha;
 
+if existe > 0 then
+    select 'Ya existe un menú registrado para esta fecha' mensaje;
+else
+    select coalesce(stoc_becados, 0) into becados from stock order by stoc_id desc limit 1;
+    set becados = GREATEST(COALESCE(becados, 0), 0);
 
+    INSERT INTO `menu`
+    (`menu_fecha`,`menu_desayuno`,`menu_des_cont`,`menu_alm_entrada`,`menu_alm_postre`,`menu_almuerzo`,`menu_alm_bebida`,
+    `menu_alm_cont`,`menu_cen_entrada`,`menu_cen_postre`,`menu_cena`,`menu_cen_bebida`,`menu_cen_cont`,
+    menu_alm_contbeca, menu_cen_contbeca)
+    VALUES
+    (fecha,desayuno,320,almen,almpostre,almuerzo,almbeb,GREATEST(650-becados, 0),
+    cenaen,cenapos,cena,cenabeb,GREATEST(360-becados, 0),becados,becados);
+
+    select 'Menú registrado correctamente' mensaje;
+end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

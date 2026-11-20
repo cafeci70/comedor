@@ -63,6 +63,7 @@ La conexión se configura con variables de entorno (valores por defecto entre pa
 | `DB_USER` | `root` |
 | `DB_PASS` | *(vacío)* |
 | `DB_NAME` | `comedor` |
+| `APP_TIMEZONE` | `America/Lima` |
 
 Ejemplo:
 
@@ -141,9 +142,12 @@ ya publicada con esa firma.
 ## Notas
 
 - Las contraseñas en la base de datos de ejemplo están en texto plano (esquema heredado).
-  El código de autenticación ya acepta hashes `password_verify()` si se migran.
-- Los reportes web requieren sesión de secretaría; la app abre esa sesión automáticamente
-  para el WebView de la pantalla de inicio.
+  Tanto los endpoints de la API (`iniciar_sesion_alumno.php`, `iniciar_sesion_secretaria.php`)
+  como el panel de reportes aceptan hashes `password_verify()` si se migran (las columnas
+  `alum_pass` y `usu_contrasena` soportan hasta 255 caracteres).
+- Los endpoints de `Alumno/` y `Secretaria/` requieren sesión PHP autenticada por rol
+  (`COMEDORAPI`, enviada por `POST` en el login); el panel web usa su propia sesión
+  (`COMEDORREPORTES`), que la app Android abre automáticamente para el WebView.
 - El build de release tiene R8/minificado activado; `versionCode = 2`, `versionName = 1.1`.
 - `release` usa `API_BASE_URL` (HTTPS) y `debug` usa `API_BASE_URL_DEBUG`. En release,
   el API debe servirse por HTTPS; el backend ya respeta `HTTPS`/`X-Forwarded-Proto`

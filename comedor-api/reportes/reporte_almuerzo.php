@@ -10,7 +10,9 @@ $resumen = obtener_resumen_ventas($conn, $fecha);
 $conn->close();
 
 $alm = $resumen['almuerzo'];
-$tituloAlmuerzo = 'Compra del ' . $resumen['fecha'] . ' - Almuerzo: ' . $alm['nombre']
+$fechaEsc = htmlspecialchars($resumen['fecha'], ENT_QUOTES, 'UTF-8');
+$nombreAlmEsc = htmlspecialchars($alm['nombre'], ENT_QUOTES, 'UTF-8');
+$tituloAlmuerzo = 'Compra del ' . $fechaEsc . ' - Almuerzo: ' . $nombreAlmEsc
     . '<br>TOTAL DE TICKETS VENDIDOS: ' . $alm['total']
     . '<br>Becados: ' . $alm['becados']
     . '<br>No Becados: ' . $alm['nobecados'];
@@ -24,7 +26,7 @@ $tituloAlmuerzo = 'Compra del ' . $resumen['fecha'] . ' - Almuerzo: ' . $alm['no
     <title>REPORTES - ALMUERZO</title>
 </head>
 <body>
-<p align="right"><a href="logout.php">Cerrar sesión</a></p>
+<?php reportes_render_logout_link(); ?>
 <script src="Highcharts-7.1.2/code/highcharts.js"></script>
 <script src="Highcharts-7.1.2/code/modules/exporting.js"></script>
 <script src="Highcharts-7.1.2/code/modules/export-data.js"></script>

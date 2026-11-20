@@ -1,7 +1,11 @@
 <?php
 require_once __DIR__ . '/../../db_helper.php';
 
+$session = require_api_role('alumno');
 $alum_id = require_int_param('GET', 'alum_id');
+if ($alum_id !== (int) $session['api_user_id']) {
+    send_json_error('No autorizado para consultar otro alumno', 403);
+}
 
 $conn = get_db_connection();
 $compras = fetch_all_prepared(

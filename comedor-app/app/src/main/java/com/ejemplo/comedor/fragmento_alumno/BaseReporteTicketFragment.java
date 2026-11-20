@@ -90,6 +90,7 @@ public abstract class BaseReporteTicketFragment extends Fragment {
                 try {
                     JSONObject jsonObject = response.getJSONObject(0);
                     String compId = jsonObject.getString("comp_id");
+                    String compQr = jsonObject.optString("comp_qr", "");
                     String compFecha = jsonObject.getString("comp_fecha");
                     String nombreAlumno = jsonObject.getString("alum_nombres");
 
@@ -112,6 +113,9 @@ public abstract class BaseReporteTicketFragment extends Fragment {
                             + "|CODIGO:" + Variables_globales.a_codigo
                             + "|TIPO:" + getTipoComidaLabel().toUpperCase(Locale.ROOT)
                             + "|FECHA:" + compFecha;
+                    if (!compQr.isEmpty() && !"####".equals(compQr)) {
+                        qrPayload += "|TOKEN:" + compQr;
+                    }
 
                     Bitmap bitmap = QRCode.from(qrPayload).withSize(500, 500).bitmap();
                     imgQr.setImageBitmap(bitmap);

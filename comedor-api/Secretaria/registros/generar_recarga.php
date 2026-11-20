@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../db_helper.php';
 
+require_http_method('POST');
+require_api_role('secretaria');
+
 $alum_codigo = require_param('POST', 'alum_codigo');
 $saldo       = require_int_param('POST', 'saldo');
 
@@ -13,7 +16,11 @@ $mensaje = call_procedure_message($conn, 'generar_recarga', 'si', array($alum_co
 $conn->close();
 
 $ok = ($mensaje !== null && stripos($mensaje, 'recarg') !== false);
-send_json(array(
-    'ok' => $ok,
-    'mensaje' => $mensaje !== null ? $mensaje : 'Operación procesada',
-));
+$status = $ok ? 200 : ($mensaje === 'Alumno no encontrado' ? 404 : 409);
+send_json(
+    array(
+        'ok' => $ok,
+        'mensaje' => $mensaje !== null ? $mensaje : 'Operación procesada',
+    ),
+    $status
+);

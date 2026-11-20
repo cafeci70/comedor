@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../db_helper.php';
 
+require_http_method('POST');
+require_api_role('secretaria');
+
 $stock_id      = require_int_param('POST', 'id_stock');
 $stock_periodo = require_param('POST', 'periodo');
 $stock_becados = require_int_param('POST', 'becados');

@@ -195,10 +195,7 @@ public class menu_alumno extends AppCompatActivity implements NavigationView.OnN
 
         if (id == R.id.action_settings) {
             stopSaldoPolling();
-            Variables_globales.clearSession();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            SessionLogoutHelper.logout(this);
             return true;
         }
 

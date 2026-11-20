@@ -11,13 +11,15 @@ $conn->close();
 
 $alm = $resumen['almuerzo'];
 $cen = $resumen['cena'];
+$nombreAlmEsc = htmlspecialchars($alm['nombre'], ENT_QUOTES, 'UTF-8');
+$nombreCenEsc = htmlspecialchars($cen['nombre'], ENT_QUOTES, 'UTF-8');
 
-$tituloAlmuerzo = 'Almuerzo: ' . $alm['nombre']
+$tituloAlmuerzo = 'Almuerzo: ' . $nombreAlmEsc
     . '<br>Total Tickets Vendidos: ' . $alm['total']
     . '<br>Becados: ' . $alm['becados']
     . '<br>No Becados: ' . $alm['nobecados'];
 
-$tituloCena = 'Cena: ' . $cen['nombre']
+$tituloCena = 'Cena: ' . $nombreCenEsc
     . '<br>Total Tickets Vendidos: ' . $cen['total']
     . '<br>Becados: ' . $cen['becados']
     . '<br>No Becados: ' . $cen['nobecados'];
@@ -31,7 +33,7 @@ $tituloCena = 'Cena: ' . $cen['nombre']
     <title>REPORTES</title>
 </head>
 <body>
-<p align="right"><a href="logout.php">Cerrar sesión</a></p>
+<?php reportes_render_logout_link(); ?>
 <script src="Highcharts-7.1.2/code/highcharts.js"></script>
 <script src="Highcharts-7.1.2/code/modules/highcharts-3d.js"></script>
 

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -227,13 +228,20 @@ public abstract class BaseCompraTicketFragment extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (!ApiResponseHelper.isSuccessResponse(response)) {
+                String msg = ApiResponseHelper.extractMessage(response, "No se pudo registrar la compra");
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                reporteStock();
+                return;
+            }
             comprobarCompra(true);
         }, error -> {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            btnComprar.setEnabled(stockDisponible > 0);
-            Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            String msg = ApiResponseHelper.extractErrorMessage(error, "No se pudo procesar la compra");
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            reporteStock();
         }) {
             @Override
             protected Map<String, String> getParams() {

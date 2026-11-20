@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../db_helper.php';
 
+require_http_method('POST');
+require_api_role('secretaria');
+
 $fecha            = require_date_param('POST', 'fecha');
 $desayuno         = require_param('POST', 'desayuno');
 $almuerzo_entrada = require_param('POST', 'almuerzo_entrada');
@@ -13,7 +16,7 @@ $cena             = require_param('POST', 'cena');
 $cena_bebida      = require_param('POST', 'cena_bebida');
 
 $conn = get_db_connection();
-call_procedure_message(
+$mensaje = call_procedure_message(
     $conn,
     'registrar_menu',
     'ssssssssss',
@@ -24,4 +27,8 @@ call_procedure_message(
 );
 $conn->close();
 
-send_json(array('ok' => true, 'mensaje' => 'Menú registrado correctamente'));
+if ($mensaje !== null && stripos($mensaje, 'Ya existe') !== false) {
+    send_json_error($mensaje, 409);
+}
+
+send_json(array('ok' => true, 'mensaje' => $mensaje !== null ? $mensaje : 'Menú registrado correctamente'));

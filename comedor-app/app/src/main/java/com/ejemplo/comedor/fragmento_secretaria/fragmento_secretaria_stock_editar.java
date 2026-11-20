@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -76,14 +77,17 @@ public class fragmento_secretaria_stock_editar extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), "OPERACION EXITOSA", Toast.LENGTH_SHORT).show();
-            cargar_fragmento(new fragmento_secretaria_reporte_stock());
+            String msg = ApiResponseHelper.extractMessage(response, "OPERACION EXITOSA");
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            if (ApiResponseHelper.isSuccessResponse(response)) {
+                cargar_fragmento(new fragmento_secretaria_reporte_stock());
+            }
 
         }, error -> {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo actualizar el stock"), Toast.LENGTH_SHORT).show();
         }) {
             @Override
             protected Map<String, String> getParams() {

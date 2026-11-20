@@ -22,6 +22,10 @@ class conexion
             if (!$this->conn->set_charset('utf8mb4')) {
                 $this->conn->set_charset('utf8');
             }
+        } elseif ($this->conn) {
+            error_log('MySQL connection error (' . $this->conn->connect_errno . '): ' . $this->conn->connect_error);
+        } else {
+            error_log('MySQL connection error: unable to instantiate mysqli');
         }
     }
 

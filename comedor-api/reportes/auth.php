@@ -16,13 +16,22 @@ if (session_status() === PHP_SESSION_NONE) {
     $scriptDir = str_replace('\\', '/', dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '/'));
     $cookiePath = rtrim($scriptDir, '/') . '/';
 
-    $isHttps = (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off')
-        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
-            && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+    $isHttps = is_https_request();
 
     session_name('COMEDORREPORTES');
-    session_set_cookie_params(0, $cookiePath, '', $isHttps, true);
-    ini_set('session.cookie_samesite', 'Lax');
+    if (PHP_VERSION_ID >= 70300) {
+        session_set_cookie_params(array(
+            'lifetime' => 0,
+            'path' => $cookiePath,
+            'domain' => '',
+            'secure' => $isHttps,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ));
+    } else {
+        session_set_cookie_params(0, $cookiePath, '', $isHttps, true);
+        ini_set('session.cookie_samesite', 'Lax');
+    }
     ini_set('session.use_strict_mode', '1');
     ini_set('session.gc_maxlifetime', (string) $reportes_session_inactivity);
     session_start();
@@ -50,11 +59,7 @@ function reportes_verificar_credenciales($conn, $codigo, $clave)
     }
 
     $row = $rows[0];
-    $stored = (string) $row['usu_contrasena'];
-    $esHash = (strlen($stored) > 0 && $stored[0] === '$');
-    $valida = $esHash ? password_verify($clave, $stored) : hash_equals($stored, $clave);
-
-    return $valida ? $row : null;
+    return verify_stored_password($clave, $row['usu_contrasena']) ? $row : null;
 }
 
 /**
@@ -80,10 +85,14 @@ function reportes_iniciar_sesion($usuario)
 function reportes_session_cookie_data()
 {
     $params = session_get_cookie_params();
+    $cookiePath = isset($params['path']) ? $params['path'] : '/';
     return array(
         'name' => session_name(),
         'value' => session_id(),
-        'path' => isset($params['path']) ? $params['path'] : '/',
+        'path' => $cookiePath,
+        'cookie_name' => session_name(),
+        'cookie_value' => session_id(),
+        'cookie_path' => $cookiePath,
     );
 }
 
@@ -178,14 +187,20 @@ function reportes_require_auth()
             reportes_mostrar_login('Ingrese código y clave.');
         }
 
+        if (!rate_limit_check('reportes_login', $codigo)) {
+            reportes_mostrar_login('Demasiados intentos fallidos. Espere unos minutos.');
+        }
+
         $conn = get_db_connection();
         $usuario = reportes_verificar_credenciales($conn, $codigo, $clave);
         $conn->close();
 
         if ($usuario === null) {
+            rate_limit_record_failure('reportes_login', $codigo);
             reportes_mostrar_login('Código o clave incorrectos.');
         }
 
+        rate_limit_clear('reportes_login', $codigo);
         reportes_iniciar_sesion($usuario);
         header('Location: index.php');
         exit;
@@ -197,4 +212,16 @@ function reportes_require_auth()
     }
 
     reportes_mostrar_login();
+}
+
+/**
+ * Renders a CSRF-protected POST logout control.
+ */
+function reportes_render_logout_link()
+{
+    $token = htmlspecialchars(reportes_csrf_token(), ENT_QUOTES, 'UTF-8');
+    echo '<form method="post" action="logout.php" style="text-align:right;margin:0 0 12px 0;">'
+        . '<input type="hidden" name="csrf" value="' . $token . '">'
+        . '<button type="submit" style="background:none;border:0;color:#00574b;font-weight:bold;cursor:pointer;padding:0;font-size:inherit;">Cerrar sesión</button>'
+        . '</form>';
 }

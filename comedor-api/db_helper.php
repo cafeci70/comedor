@@ -2,8 +2,294 @@
 require_once __DIR__ . '/conexion.php';
 
 /**
- * Shared helpers for JSON responses, input validation, and prepared SQL execution.
+ * Shared helpers for JSON responses, input validation, authentication,
+ * rate limiting, and prepared SQL execution.
  */
+
+$appTimezone = getenv('APP_TIMEZONE');
+if ($appTimezone === false || trim($appTimezone) === '') {
+    $appTimezone = 'America/Lima';
+}
+@date_default_timezone_set($appTimezone);
+
+/**
+ * Returns true if the current request arrived over HTTPS (directly or via proxy).
+ *
+ * @return bool
+ */
+function is_https_request()
+{
+    return (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off')
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
+            && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+}
+
+/**
+ * Resolves the URL base path of the comedor-api directory for session cookies.
+ *
+ * @return string
+ */
+function api_cookie_path()
+{
+    $scriptName = str_replace('\\', '/', isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '/');
+    $apiRoot = realpath(__DIR__);
+    $scriptFile = isset($_SERVER['SCRIPT_FILENAME']) ? realpath($_SERVER['SCRIPT_FILENAME']) : false;
+
+    if ($apiRoot !== false && $scriptFile !== false) {
+        $apiRootNorm = rtrim(str_replace('\\', '/', $apiRoot), '/');
+        $scriptDirNorm = rtrim(str_replace('\\', '/', dirname($scriptFile)), '/');
+        if (strpos($scriptDirNorm, $apiRootNorm) === 0) {
+            $rel = str_replace('\\', '/', substr($scriptDirNorm, strlen($apiRootNorm)));
+            $urlDir = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
+            if ($rel !== '' && substr($urlDir, -strlen($rel)) === $rel) {
+                $base = substr($urlDir, 0, strlen($urlDir) - strlen($rel));
+                return ($base === '' ? '' : $base) . '/';
+            }
+            return ($urlDir === '' ? '' : $urlDir) . '/';
+        }
+    }
+
+    $pos = strpos($scriptName, '/comedor-api/');
+    if ($pos !== false) {
+        return substr($scriptName, 0, $pos + strlen('/comedor-api/'));
+    }
+    return '/';
+}
+
+/**
+ * Starts the API PHP session scoped to the comedor-api root path.
+ */
+function api_start_session()
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        $inactivity = 1800;
+        $cookiePath = api_cookie_path();
+        $isHttps = is_https_request();
+
+        session_name('COMEDORAPI');
+        if (PHP_VERSION_ID >= 70300) {
+            session_set_cookie_params(array(
+                'lifetime' => 0,
+                'path' => $cookiePath,
+                'domain' => '',
+                'secure' => $isHttps,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ));
+        } else {
+            session_set_cookie_params(0, $cookiePath, '', $isHttps, true);
+            ini_set('session.cookie_samesite', 'Lax');
+        }
+        ini_set('session.use_strict_mode', '1');
+        ini_set('session.gc_maxlifetime', (string) $inactivity);
+        session_start();
+    }
+}
+
+/**
+ * Stores authenticated user state in the API session and regenerates the ID.
+ *
+ * @param string $role 'alumno' or 'secretaria'
+ * @param int $userId
+ * @param string $userCode
+ */
+function api_login_session($role, $userId, $userCode)
+{
+    api_start_session();
+    session_regenerate_id(true);
+    $_SESSION['api_auth'] = true;
+    $_SESSION['api_role'] = (string) $role;
+    $_SESSION['api_user_id'] = (int) $userId;
+    $_SESSION['api_user_code'] = (string) $userCode;
+    $_SESSION['api_last_activity'] = time();
+}
+
+/**
+ * Destroys the current API session and expires its cookie.
+ */
+function api_logout_session()
+{
+    api_start_session();
+    $_SESSION = array();
+
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
+    }
+
+    session_destroy();
+}
+
+/**
+ * Ensures the request has an active API session with one of the allowed roles.
+ *
+ * @param string|array $allowedRoles
+ * @return array Session payload
+ */
+function require_api_role($allowedRoles)
+{
+    api_start_session();
+
+    $inactivity = 1800;
+    $lastActivity = isset($_SESSION['api_last_activity']) ? (int) $_SESSION['api_last_activity'] : 0;
+    if (empty($_SESSION['api_auth']) || (time() - $lastActivity) >= $inactivity) {
+        api_logout_session();
+        send_json_error('Sesión no iniciada o expirada', 401);
+    }
+
+    $_SESSION['api_last_activity'] = time();
+
+    $roles = is_array($allowedRoles) ? $allowedRoles : array($allowedRoles);
+    $currentRole = isset($_SESSION['api_role']) ? (string) $_SESSION['api_role'] : '';
+    if (!in_array($currentRole, $roles, true)) {
+        send_json_error('No tiene permisos para realizar esta operación', 403);
+    }
+
+    return $_SESSION;
+}
+
+/**
+ * Verifies a plaintext password against a password_hash() digest or legacy plaintext.
+ *
+ * @param string $plain
+ * @param string $stored
+ * @return bool
+ */
+function verify_stored_password($plain, $stored)
+{
+    $plainStr = (string) $plain;
+    $storedStr = (string) $stored;
+    if ($plainStr === '' || $storedStr === '') {
+        return false;
+    }
+    $info = password_get_info($storedStr);
+    if (!empty($info['algo'])) {
+        return password_verify($plainStr, $storedStr);
+    }
+    return hash_equals($storedStr, $plainStr);
+}
+
+/**
+ * Returns the client identifier used for rate limiting.
+ *
+ * @return string
+ */
+function rate_limit_client_ip()
+{
+    return isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : 'unknown';
+}
+
+/**
+ * Builds the storage path for a rate limit bucket.
+ *
+ * @param string $scope
+ * @param string $identifier
+ * @return string
+ */
+function rate_limit_file_path($scope, $identifier)
+{
+    $key = hash('sha256', $scope . '|' . rate_limit_client_ip() . '|' . $identifier);
+    return rtrim(sys_get_temp_dir(), '/\\') . DIRECTORY_SEPARATOR . 'comedor_rl_' . $key . '.json';
+}
+
+/**
+ * Checks whether an identifier is still within the allowed failed login threshold.
+ *
+ * @param string $scope
+ * @param string $identifier
+ * @param int $maxAttempts
+ * @param int $windowSeconds
+ * @return bool
+ */
+function rate_limit_check($scope, $identifier, $maxAttempts = 10, $windowSeconds = 300)
+{
+    $path = rate_limit_file_path($scope, $identifier);
+    if (!is_file($path)) {
+        return true;
+    }
+    $raw = @file_get_contents($path);
+    if ($raw === false) {
+        return true;
+    }
+    $data = json_decode($raw, true);
+    if (!is_array($data) || !isset($data['attempts'], $data['first_at'])) {
+        return true;
+    }
+    if ((time() - (int) $data['first_at']) >= $windowSeconds) {
+        @unlink($path);
+        return true;
+    }
+    return ((int) $data['attempts']) < $maxAttempts;
+}
+
+/**
+ * Records a failed authentication attempt in the rate limit bucket.
+ *
+ * @param string $scope
+ * @param string $identifier
+ * @param int $windowSeconds
+ */
+function rate_limit_record_failure($scope, $identifier, $windowSeconds = 300)
+{
+    $path = rate_limit_file_path($scope, $identifier);
+    $fp = @fopen($path, 'c+');
+    if (!$fp) {
+        return;
+    }
+    if (@flock($fp, LOCK_EX)) {
+        $raw = stream_get_contents($fp);
+        $data = is_string($raw) && $raw !== '' ? json_decode($raw, true) : null;
+        $now = time();
+
+        if (!is_array($data) || !isset($data['attempts'], $data['first_at']) || ($now - (int) $data['first_at']) >= $windowSeconds) {
+            $data = array('attempts' => 1, 'first_at' => $now);
+        } else {
+            $data['attempts'] = (int) $data['attempts'] + 1;
+        }
+
+        ftruncate($fp, 0);
+        rewind($fp);
+        fwrite($fp, json_encode($data));
+        fflush($fp);
+        flock($fp, LOCK_UN);
+    }
+    fclose($fp);
+}
+
+/**
+ * Clears any recorded failed login attempts after a successful authentication.
+ *
+ * @param string $scope
+ * @param string $identifier
+ */
+function rate_limit_clear($scope, $identifier)
+{
+    $path = rate_limit_file_path($scope, $identifier);
+    if (is_file($path)) {
+        @unlink($path);
+    }
+}
+
+/**
+ * Enforces an expected HTTP request method (e.g. POST).
+ *
+ * @param string $method
+ */
+function require_http_method($method)
+{
+    $actual = isset($_SERVER['REQUEST_METHOD']) ? strtoupper((string) $_SERVER['REQUEST_METHOD']) : '';
+    if ($actual !== strtoupper($method)) {
+        send_json_error('Método HTTP no permitido', 405);
+    }
+}
 
 /**
  * Opens a validated mysqli connection or terminates with a 500 JSON response.
@@ -169,6 +455,7 @@ function prepare_and_execute($conn, $sql, $types = '', $params = array())
 {
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
+        error_log('MySQL prepare error (' . $conn->errno . '): ' . $conn->error . ' | SQL: ' . $sql);
         send_json_error('Error interno al preparar la operación SQL', 500);
     }
     if ($types !== '' && !empty($params)) {
@@ -179,6 +466,7 @@ function prepare_and_execute($conn, $sql, $types = '', $params = array())
         call_user_func_array(array($stmt, 'bind_param'), $refs);
     }
     if (!$stmt->execute()) {
+        error_log('MySQL execute error (' . $stmt->errno . '): ' . $stmt->error);
         $stmt->close();
         send_json_error('Error interno al ejecutar la operación SQL', 500);
     }

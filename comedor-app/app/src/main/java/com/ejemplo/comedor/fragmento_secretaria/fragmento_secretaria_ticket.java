@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.VolleySingleton;
@@ -61,15 +62,19 @@ public class fragmento_secretaria_ticket extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), "OPERACION EXITOSA", Toast.LENGTH_SHORT).show();
-            //LIMPIAMOS LOS CAMPOS DESPUES DE RECARGAR
+            String msg = ApiResponseHelper.extractMessage(response, "OPERACION EXITOSA");
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            if (!ApiResponseHelper.isSuccessResponse(response)) {
+                return;
+            }
+            //LIMPIAMOS LOS CAMPOS DESPUES DE REGISTRAR
             text_periodo.setText("");
             text_stock.setText("");
         }, error -> {
             if (!isAdded() || getContext() == null) {
                 return;
             }
-            Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo registrar el stock"), Toast.LENGTH_SHORT).show();
         }) {
             @Override
             protected Map<String, String> getParams() {
