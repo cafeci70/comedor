@@ -1,106 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragmento_alumno.fragmento_alumno_comprar">
-
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp"
         android:background="#7FD5C5"
         android:gravity="center_horizontal"
+        android:paddingVertical="8dp"
         android:text="Ticket de almuerzo"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="28sp" />
+        android:textSize="@dimen/header_text_size" />
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="50dp"
-        android:text="Stock"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/stock_ticket_almuerzo"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="100dp"
-        android:editable="false"
-        android:ems="10"
-        android:enabled="false"
-        android:inputType="textPersonName"
-        android:text="00"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="50dp"
-        android:text="Consumo"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/screen_padding_horizontal"
+            android:paddingTop="@dimen/screen_padding_vertical"
+            android:paddingEnd="@dimen/screen_padding_horizontal"
+            android:paddingBottom="@dimen/screen_padding_vertical">
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="140dp"
-        android:editable="false"
-        android:enabled="false"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="1"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_max="@dimen/content_max_width">
 
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="50dp"
-        android:text="Monto pagar                 S/."
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="190dp"
-        android:ems="10"
-        android:enabled="false"
-        android:editable="false"
-        android:inputType="textPersonName"
-        android:text="1.00"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Stock"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
 
-    <Button
-        android:id="@+id/btn_comprar_almuerzo"
-        android:layout_width="177dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="300dp"
-        android:background="#7FD5C5"
-        android:text="Comprar"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="22sp" />
+                    <TextView
+                        android:id="@+id/stock_ticket_almuerzo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:minWidth="64dp"
+                        android:text="00"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size"
+                        android:textStyle="bold" />
 
+                </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Consumo"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
 
-</FrameLayout>
+                    <EditText
+                        android:id="@+id/editText1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:inputType="none"
+                        android:minWidth="64dp"
+                        android:text="1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Monto pagar (S/.)"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <EditText
+                        android:id="@+id/editText2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:gravity="end"
+                        android:inputType="none"
+                        android:minWidth="64dp"
+                        android:text="1.00"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_comprar_almuerzo"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="32dp"
+                    android:background="#7FD5C5"
+                    android:text="Comprar"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</LinearLayout>

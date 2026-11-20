@@ -1,6 +1,5 @@
 package com.ejemplo.comedor.fragmento_secretaria;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -136,12 +135,10 @@ public class fragmento_secretaria_horario_editar extends Fragment {
         VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 
-    @SuppressWarnings({"DiscouragedApi", "SourceLockedOrientationActivity"})
     public void cargar_fragmento(Fragment fragmentento) {
         if (!isAdded() || getActivity() == null) {
             return;
         }
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.contenedor_fragmento, fragmentento).commit();
     }

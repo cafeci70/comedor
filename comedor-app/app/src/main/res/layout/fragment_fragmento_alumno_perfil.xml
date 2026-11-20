@@ -1,155 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragmento_alumno.fragmento_alumno_perfil">
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="0dp"
         android:background="#7FD5C5"
         android:gravity="center_horizontal"
+        android:paddingVertical="8dp"
         android:text="Mis datos"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="28sp" />
+        android:textSize="@dimen/header_text_size" />
 
-    <TextView
-        android:id="@+id/a_nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="50dp"
-        android:text="Nombre_alumno"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        android:visibility="visible" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/a_nombre_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
-        android:text="Nombre :"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        android:visibility="visible" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/screen_padding_horizontal"
+            android:paddingTop="@dimen/screen_padding_vertical"
+            android:paddingEnd="@dimen/screen_padding_horizontal"
+            android:paddingBottom="@dimen/screen_padding_vertical">
 
-    <TextView
-        android:id="@+id/a_apellido_p"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="90dp"
-        android:text="Carrera_profesional"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_apellido_p_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="90dp"
-        android:text="Apellido_P :"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_max="@dimen/content_max_width">
 
-    <TextView
-        android:id="@+id/a_apellido_m"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="130dp"
-        android:text="Codigo_alumno"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_apellido_m_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="130dp"
-        android:text="Apellido_M:"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/a_correo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="170dp"
-        android:text="Correo_electronico"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_correo_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="170dp"
-        android:text="Correo       :"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_celular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="210dp"
-        android:text="N° Cel/Telf"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/a_nombre_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/a_celular_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="210dp"
-        android:text="Cel/Telf    :"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_saldo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="250dp"
-        android:text="Datos si es becado o no"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_saldo_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="250dp"
-        android:text="Saldo        :"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
-    <TextView
-        android:id="@+id/a_beca"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="290dp"
-        android:text="Saldo disponible"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/a_nombre"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nombre_alumno"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-    <TextView
-        android:id="@+id/a_beca_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="290dp"
-        android:text="Becado    :"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:orientation="horizontal">
 
-</FrameLayout>
+                    <TextView
+                        android:id="@+id/a_apellido_p_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Apellido P. :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <TextView
+                        android:id="@+id/a_apellido_p"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Apellido_paterno"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/a_apellido_m_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Apellido M. :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <TextView
+                        android:id="@+id/a_apellido_m"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Apellido_materno"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/a_correo_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Correo :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <TextView
+                        android:id="@+id/a_correo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Correo_electronico"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/a_celular_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Cel/Telf :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <TextView
+                        android:id="@+id/a_celular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="N° Cel/Telf"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/a_saldo_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Saldo :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <TextView
+                        android:id="@+id/a_saldo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Saldo disponible"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/form_section_spacing"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/a_beca_"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Becado :"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+
+                    <TextView
+                        android:id="@+id/a_beca"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="si / no"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/body_text_size" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</LinearLayout>

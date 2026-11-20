@@ -1,7 +1,6 @@
 package com.ejemplo.comedor;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -203,31 +202,23 @@ public class menu_alumno extends AppCompatActivity implements NavigationView.OnN
     }
 
     @Override
-    @SuppressWarnings({"DiscouragedApi", "SourceLockedOrientationActivity"})
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
             cargar_fragmento(new fragmento_alumno_inicio());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_gallery) {
             cargar_fragmento(new fragmento_alumno_perfil());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_slideshow) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             cargar_fragmento(new fragmento_alumno_menu());
         } else if (id == R.id.nav_tools) {
             cargar_fragmento(new fragmento_alumno_comprar());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_tools2) {
             cargar_fragmento(new fragmento_alumno_comprar_cena());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_share) {
             cargar_fragmento(new fragmento_alumno_reglamento());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_send) {
             cargar_fragmento(new fragmento_horario());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -240,10 +231,8 @@ public class menu_alumno extends AppCompatActivity implements NavigationView.OnN
         manager.beginTransaction().replace(R.id.contenedor_fragmento, fragmentento).commit();
     }
 
-    @SuppressWarnings({"DiscouragedApi", "SourceLockedOrientationActivity"})
     public void cargar_fragmento_para_inicio(Fragment fragmentento) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.contenedor_fragmento, fragmentento).commit();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

@@ -1,7 +1,6 @@
 package com.ejemplo.comedor;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
@@ -113,40 +112,29 @@ public class menu_secretaria extends AppCompatActivity implements NavigationView
     }
 
     @Override
-    @SuppressWarnings({"DiscouragedApi", "SourceLockedOrientationActivity"})
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
             cargar_fragmento(new fragmento_secretaria_inicio());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_gallery) {
             cargar_fragmento(new fragmento_secretaria_perfil());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_slideshow) {
             cargar_fragmento(new fragmento_secretaria_saldo());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_tools) {
             cargar_fragmento(new fragmento_secretaria_horario());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_ticket) {
             cargar_fragmento(new fragmento_secretaria_ticket());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.report_alumno) {
             cargar_fragmento(new fragmento_secretaria_reporte_alumno());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.report_stock) {
             cargar_fragmento(new fragmento_secretaria_reporte_stock());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.report_horario) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             cargar_fragmento(new fragmento_secretaria_reporte_horario());
         } else if (id == R.id.nav_share) {
             cargar_fragmento(new fragmento_secretaria_ayuda());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (id == R.id.nav_send) {
             cargar_fragmento(new fragmento_horario());
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -159,10 +147,8 @@ public class menu_secretaria extends AppCompatActivity implements NavigationView
         manager.beginTransaction().replace(R.id.contenedor_fragmento, fragmentento).commit();
     }
 
-    @SuppressWarnings({"DiscouragedApi", "SourceLockedOrientationActivity"})
     public void cargar_fragmento_para_inicio(Fragment fragmentento) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.contenedor_fragmento, fragmentento).commit();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

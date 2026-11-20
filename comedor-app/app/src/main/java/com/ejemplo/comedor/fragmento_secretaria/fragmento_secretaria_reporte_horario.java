@@ -1,6 +1,5 @@
 package com.ejemplo.comedor.fragmento_secretaria;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -119,14 +118,12 @@ public class fragmento_secretaria_reporte_horario extends Fragment {
         return v;
     }
 
-    @SuppressWarnings({"DiscouragedApi", "SourceLockedOrientationActivity"})
     public void cargar_fragmento(Fragment fragmentento) {
         if (!isAdded() || getActivity() == null) {
             return;
         }
         FragmentManager manager = getActivity().getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.contenedor_fragmento, fragmentento).commit();
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void Ejecutar_Reporte_menu(String url) {
