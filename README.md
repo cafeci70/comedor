@@ -1,132 +1,85 @@
 # Comedor — Tickets Comedor
 
 Sistema para la venta de tickets de **almuerzo** y **cena** de un comedor universitario.
-Consta de dos proyectos independientes que se comunican mediante una API REST sobre HTTPS, con respuestas JSON:
 
-- **`comedor-api/`** — backend en PHP + MySQL: endpoints JSON para la app y panel web de reportes con Highcharts.
-- **`comedor-app/`** — aplicación Android nativa en Java, con perfiles de **Alumno** y **Secretaría**.
+- **`comedor-api/`** — Backend en PHP + MySQL con respuestas JSON y panel web de reportes (Highcharts v13.1.1).
+- **`comedor-app/`** — App Android nativa en Java (responsiva para celular y tablet), con perfiles de **Alumno** y **Secretaría**.
 
-> **Este repositorio es un proyecto base (plantilla).** No está desplegado ni incluye un dominio real:
-> quien desee usarlo debe adaptarlo a su entorno (URL de la API, credenciales de base de datos,
-> certificado HTTPS y firma del APK). Las credenciales y los datos incluidos son ficticios y
-> sirven únicamente como ejemplo para probar.
+> **Proyecto base (plantilla):** Incluye datos ficticios de prueba. Para producción debes configurar tu propio dominio HTTPS, credenciales de base de datos y firma del APK.
 
 ## Estructura
 
-```
+```text
 comedor/
 ├── comedor-api/
 │   ├── Alumno/          # compras, comprobaciones y tickets del alumno
 │   ├── Secretaria/      # acciones, registros y reportes
-│   ├── reportes/        # panel web (requiere login) + Highcharts
-│   ├── conexion.php     # conexión MySQL (variables de entorno)
-│   └── db_helper.php    # respuestas JSON, validación y SQL preparado
+│   ├── reportes/        # panel web con gráficos Highcharts
+│   ├── conexion.php     # conexión MySQL y zona horaria
+│   └── db_helper.php    # sesiones, validación y SQL preparado
 ├── comedor-app/         # proyecto Android (Gradle)
-├── comedor.sql          # estructura + datos ficticios de prueba
-└── .gitignore
+└── comedor.sql          # esquema + procedimientos + datos de prueba
 ```
 
 ## Requisitos
 
-- **PHP 8.3 o superior** con extensión `mysqli`.
-- **MySQL 8.4 LTS** (o MariaDB 11.4 LTS). El dump está adaptado a MySQL 8.4: usa `utf8mb4` y un `sql_mode` sin `NO_AUTO_CREATE_USER`.
-- Servidor web con soporte PHP (Apache, Nginx, etc.).
-- Android SDK, JDK 17 y Android Studio (o Gradle 8.9 incluido en el wrapper).
+- **PHP 8.3+** con extensión `mysqli` y servidor web (Apache/Nginx).
+- **MySQL 8.4 LTS** (o MariaDB 11.4 LTS).
+- **JDK 17** y **Android SDK** (Gradle 8.9 incluido en el wrapper).
 
 ## Puesta en marcha
 
 ### 1. Base de datos
-
-Crear una base de datos llamada `comedor` e importar el dump:
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS comedor CHARACTER SET utf8mb4;"
 mysql -u root -p comedor < comedor.sql
 ```
 
-El dump incluye **solo datos ficticios** y usa `CURDATE()` en el menú y las compras,
-así que las pruebas funcionan el mismo día en que se importe.
-
 ### 2. API PHP
 
-Publicar la carpeta `comedor-api/` en el servidor web de modo que sea accesible como:
+Publicar `comedor-api/` en el servidor web para que responda en `https://<host>/comedor-api/`.
+Configurar mediante variables de entorno:
 
-```
-https://<host>/comedor-api/
-```
+| Variable | Default | Descripción |
+|---|---|---|
+| `DB_HOST` | `localhost` | Host de MySQL |
+| `DB_USER` | `root` | Usuario de MySQL |
+| `DB_PASS` | *(vacío)* | Contraseña de MySQL |
+| `DB_NAME` | `comedor` | Nombre de la base de datos |
+| `APP_TIMEZONE` | `America/Lima` | Zona horaria (sincroniza PHP y MySQL) |
 
-La conexión se configura con variables de entorno (valores por defecto entre paréntesis):
-
-| Variable | Default |
-|---|---|
-| `DB_HOST` | `localhost` |
-| `DB_USER` | `root` |
-| `DB_PASS` | *(vacío)* |
-| `DB_NAME` | `comedor` |
-| `APP_TIMEZONE` | `America/Lima` |
-
-Ejemplo:
-
-```bash
-export DB_HOST=localhost DB_USER=comedor DB_PASS=clave DB_NAME=comedor
-```
-
-El panel de reportes está en `https://<host>/comedor-api/reportes/index.php`.
+Panel web de reportes: `https://<host>/comedor-api/reportes/index.php`.
 
 ### 3. App Android
 
-Abrir `comedor-app/` en Android Studio o compilar por consola:
+Configurar la URL del servidor en `comedor-app/gradle.properties`:
+
+- **`API_BASE_URL_DEBUG`** (desarrollo, permite HTTP): `http://10.0.2.2` para emulador o `http://<IP-LAN>` para dispositivo físico.
+- **`API_BASE_URL`** (producción, exige HTTPS): `https://tu-dominio.com`.
+
+Compilar APK de prueba:
 
 ```bash
 cd comedor-app
 ./gradlew assembleDebug
 ```
 
-La IP del servidor se configura en
-`app/src/main/java/com/ejemplo/comedor/Url.java`:
+### 4. Compilar Release firmado (opcional)
 
-- Emulador Android: `http://10.0.2.2`
-- Dispositivo físico: IP del PC en la red (por ejemplo `http://192.168.1.10`)
-
-> **Video de la pantalla de inicio:** el proyecto **no incluye ningún video**.
-> Si quieres mostrar uno, coloca tu propio archivo en
-> `comedor-app/app/src/main/res/raw/introduccion.mp4`. La app lo detectará
-> automáticamente; si el archivo no existe, la pantalla funciona igual, sin video.
->
-
-> La URL base ya está preparada para producción: el build **debug** usa
-> `http://10.0.2.2` y el build **release** usa HTTPS. No hay que editar código
-> ni el Manifest: solo configurar `API_BASE_URL` en `comedor-app/gradle.properties`
-> (o la variable de entorno `COMEDOR_API_URL`) con el dominio real.
->
-> La configuración de red prohíbe tráfico HTTP en release y lo permite únicamente
-> en debug, para seguir probando con el emulador o con una IP de la red local.
-
-### 4. Firmar el release (opcional)
-
-Sin configuración adicional, `assembleRelease` genera `app-release-unsigned.apk`.
-Para generar un APK **firmado**, crea tu propio keystore (guárdalo fuera del repo):
-
-```bash
-keytool -genkeypair -v -keystore comedor.jks -alias comedor \
-  -keyalg RSA -keysize 2048 -validity 10000
-```
-
-Y define estas variables de entorno antes de compilar:
+Crear un keystore (fuera del repositorio) y definir las variables antes de compilar:
 
 ```powershell
+keytool -genkeypair -v -keystore comedor.jks -alias comedor -keyalg RSA -keysize 2048 -validity 10000
+
 $env:COMEDOR_KEYSTORE = "C:\ruta\comedor.jks"
 $env:COMEDOR_STORE_PASSWORD = "tu-contraseña"
 $env:COMEDOR_KEY_PASSWORD = "tu-contraseña"
-$env:COMEDOR_KEY_ALIAS = "comedor"   # opcional
+$env:COMEDOR_KEY_ALIAS = "comedor"
 .\gradlew.bat assembleRelease
 ```
 
-Con las variables definidas se genera `app-release.apk` firmado; sin ellas el
-build sigue funcionando y produce el APK sin firmar. El proyecto ignora
-`*.jks`, `*.keystore` y `keystore.properties`, así que la clave nunca se sube.
-Conserva el keystore y sus contraseñas: perderlos impide actualizar una app
-ya publicada con esa firma.
+*(Sin estas variables, `assembleRelease` genera `app-release-unsigned.apk`).*
 
 ## Usuarios de prueba
 
@@ -135,24 +88,9 @@ ya publicada con esa firma.
 | Alumno | `0000000001` | `0000000001` |
 | Secretaría | `12345678` | `12345678` |
 
-- El código de **alumno debe empezar con `000`**: la app lo usa para elegir entre login de alumno y de secretaría.
-- El usuario de **secretaría** también sirve para entrar a los reportes web.
-- El alumno de ejemplo no es becado y tiene saldo 10; se pueden comprar almuerzo y cena.
+## Detalles importantes
 
-## Notas
-
-- Las contraseñas en la base de datos de ejemplo están en texto plano (esquema heredado).
-  Tanto los endpoints de la API (`iniciar_sesion_alumno.php`, `iniciar_sesion_secretaria.php`)
-  como el panel de reportes aceptan hashes `password_verify()` si se migran (las columnas
-  `alum_pass` y `usu_contrasena` soportan hasta 255 caracteres).
-- Los endpoints de `Alumno/` y `Secretaria/` requieren sesión PHP autenticada por rol
-  (`COMEDORAPI`, enviada por `POST` en el login); el panel web usa su propia sesión
-  (`COMEDORREPORTES`), que la app Android abre automáticamente para el WebView.
-- El build de release tiene R8/minificado activado; `versionCode = 2`, `versionName = 1.1`.
-- `release` usa `API_BASE_URL` (HTTPS) y `debug` usa `API_BASE_URL_DEBUG`. En release,
-  el API debe servirse por HTTPS; el backend ya respeta `HTTPS`/`X-Forwarded-Proto`
-  para marcar la cookie de sesión como `Secure`.
-- `API_BASE_URL` trae un valor de ejemplo (`https://comedor.example.com`): cada persona que adopte
-  el proyecto debe reemplazarlo por su propio host antes de compilar el release.
-- El dump original con datos personales reales fue reemplazado por datos ficticios.
-- PHP 7.4/8.0/8.1 y MySQL 5.7/8.0 ya están fuera de soporte; no se recomiendan para nuevos despliegues.
+- **Detección de rol en el Login:** El código de **alumno debe empezar con `000`**; cualquier otro código o DNI inicia sesión como **Secretaría**.
+- **Contraseñas:** Las claves de ejemplo vienen en texto plano, pero la API y el panel web aceptan hashes `password_hash()` / `password_verify()` directamente en `alum_pass` y `usu_contrasena` (`VARCHAR(255)`).
+- **Sesiones y HTTPS:** Todos los endpoints requieren sesión activa (`COMEDORAPI` / `COMEDORREPORTES`). El build `release` de Android bloquea tráfico HTTP en texto claro y exige HTTPS.
+- **Video de bienvenida (opcional):** Si colocas un archivo en `comedor-app/app/src/main/res/raw/introduccion.mp4`, se reproducirá en el inicio del alumno; si no existe, el recuadro se oculta automáticamente.
