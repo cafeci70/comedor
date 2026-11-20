@@ -95,7 +95,7 @@ function renderizar_grafico_torta($containerId, $titulo, $becados, $noBecados)
     $becadosInt = (int) $becados;
     $noBecadosInt = (int) $noBecados;
     ?>
-<div id="<?php echo htmlspecialchars($containerId, ENT_QUOTES, 'UTF-8'); ?>"></div>
+<div class="chart-card" id="<?php echo htmlspecialchars($containerId, ENT_QUOTES, 'UTF-8'); ?>"></div>
 <script type="text/javascript">
 Highcharts.chart(<?php echo $containerJs; ?>, {
     chart: {
@@ -103,6 +103,12 @@ Highcharts.chart(<?php echo $containerJs; ?>, {
         plotBorderWidth: null,
         plotShadow: false,
         type: 'pie'
+    },
+    accessibility: {
+        enabled: false
+    },
+    credits: {
+        enabled: false
     },
     title: {
         text: <?php echo $tituloJs; ?>
@@ -118,13 +124,13 @@ Highcharts.chart(<?php echo $containerJs; ?>, {
                 enabled: true,
                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                 style: {
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    color: '#1d3b36'
                 }
             }
         }
     },
     series: [{
-        name: 'Lista de MENU',
+        name: 'Tickets',
         colorByPoint: true,
         data: [
             { name: 'Becados', y: <?php echo $becadosInt; ?> },
@@ -135,4 +141,122 @@ Highcharts.chart(<?php echo $containerJs; ?>, {
 </script>
 <?php
 }
+
+/**
+ * Renders the unified responsive daily sales report page (lunch and dinner).
+ */
+function renderizar_pagina_resumen_diario()
+{
+    $conn = get_db_connection();
+    $fecha = resolver_fecha_reporte($conn);
+    $resumen = obtener_resumen_ventas($conn, $fecha);
+    $conn->close();
+
+    $alm = $resumen['almuerzo'];
+    $cen = $resumen['cena'];
+    $fechaEsc = htmlspecialchars($resumen['fecha'], ENT_QUOTES, 'UTF-8');
+    $nombreAlmEsc = htmlspecialchars($alm['nombre'], ENT_QUOTES, 'UTF-8');
+    $nombreCenEsc = htmlspecialchars($cen['nombre'], ENT_QUOTES, 'UTF-8');
+
+    $tituloAlmuerzo = 'Almuerzo: ' . $nombreAlmEsc
+        . '<br>Total Tickets Vendidos: ' . $alm['total']
+        . '<br>Becados: ' . $alm['becados']
+        . '<br>No Becados: ' . $alm['nobecados'];
+
+    $tituloCena = 'Cena: ' . $nombreCenEsc
+        . '<br>Total Tickets Vendidos: ' . $cen['total']
+        . '<br>Becados: ' . $cen['becados']
+        . '<br>No Becados: ' . $cen['nobecados'];
+    ?>
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes del Comedor</title>
+    <style type="text/css">
+        * { box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 16px;
+            background: #f4f8f7;
+            color: #1d3b36;
+        }
+        .topbar {
+            max-width: 1100px;
+            margin: 0 auto 12px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .fecha-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .fecha-form input[type="date"] {
+            padding: 6px 8px;
+            border: 1px solid #b8d1cc;
+            border-radius: 4px;
+            color: #1d3b36;
+            background: #fff;
+        }
+        .fecha-form button {
+            padding: 7px 12px;
+            background: #00574b;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .titulo-principal {
+            text-align: center;
+            margin: 8px 0 18px 0;
+            color: #00574b;
+        }
+        .charts-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .chart-card {
+            background: #fff;
+            border: 1px solid #d7e6e3;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 320px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <form class="fecha-form" method="get" action="">
+            <label for="fecha"><strong>Fecha:</strong></label>
+            <input type="date" id="fecha" name="fecha" value="<?php echo $fechaEsc; ?>">
+            <button type="submit">Ver</button>
+        </form>
+        <?php reportes_render_logout_link(); ?>
+    </div>
+
+    <script src="js/highcharts.js"></script>
+
+    <h3 class="titulo-principal">COMPRA DEL <?php echo $fechaEsc; ?></h3>
+
+    <div class="charts-grid">
+        <?php renderizar_grafico_torta('almuerzo', $tituloAlmuerzo, $alm['becados'], $alm['nobecados']); ?>
+        <?php renderizar_grafico_torta('cena', $tituloCena, $cen['becados'], $cen['nobecados']); ?>
+    </div>
+</body>
+</html>
+<?php
+}
+
 

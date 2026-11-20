@@ -220,7 +220,7 @@ function reportes_require_auth()
 function reportes_render_logout_link()
 {
     $token = htmlspecialchars(reportes_csrf_token(), ENT_QUOTES, 'UTF-8');
-    echo '<form method="post" action="logout.php" style="text-align:right;margin:0 0 12px 0;">'
+    echo '<form method="post" action="logout.php" style="margin:0;">'
         . '<input type="hidden" name="csrf" value="' . $token . '">'
         . '<button type="submit" style="background:none;border:0;color:#00574b;font-weight:bold;cursor:pointer;padding:0;font-size:inherit;">Cerrar sesión</button>'
         . '</form>';
