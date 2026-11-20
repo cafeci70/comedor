@@ -74,6 +74,9 @@ public class fragmento_secretaria_ticket extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo registrar el stock"), Toast.LENGTH_SHORT).show();
         }) {
             @Override

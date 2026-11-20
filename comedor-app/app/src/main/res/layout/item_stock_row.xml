@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:id="@+id/tv_stock_periodo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:paddingHorizontal="4dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_stock_becados"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:paddingHorizontal="4dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingHorizontal="4dp">
+
+        <Button
+            android:id="@+id/btn_stock_editar"
+            style="@style/ComedorButtonSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:minHeight="36dp"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
+            android:text="Editar"
+            android:textSize="13sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingHorizontal="4dp">
+
+        <Button
+            android:id="@+id/btn_stock_eliminar"
+            style="@style/ComedorButtonSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:minHeight="36dp"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
+            android:text="Eliminar"
+            android:textSize="13sp" />
+    </FrameLayout>
+
+</LinearLayout>

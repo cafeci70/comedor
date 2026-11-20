@@ -105,6 +105,9 @@ public class fragmento_secretaria_horario extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo registrar el menú"), Toast.LENGTH_SHORT).show();
         }) {
             @Override

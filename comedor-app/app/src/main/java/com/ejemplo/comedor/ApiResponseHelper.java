@@ -1,5 +1,9 @@
 package com.ejemplo.comedor;
 
+import android.app.Activity;
+
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
@@ -67,5 +71,34 @@ public final class ApiResponseHelper {
             }
         }
         return fallback;
+    }
+
+    /**
+     * Returns true when the server responded with HTTP 401 Unauthorized.
+     */
+    public static boolean isUnauthorized(VolleyError error) {
+        return error != null && error.networkResponse != null && error.networkResponse.statusCode == 401;
+    }
+
+    /**
+     * Redirects to MainActivity when a fragment request receives HTTP 401.
+     */
+    public static boolean handleUnauthorized(Fragment fragment, VolleyError error) {
+        if (isUnauthorized(error) && fragment != null && fragment.getActivity() != null) {
+            SessionLogoutHelper.handleSessionExpired(fragment.getActivity());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Redirects to MainActivity when an activity request receives HTTP 401.
+     */
+    public static boolean handleUnauthorized(Activity activity, VolleyError error) {
+        if (isUnauthorized(error) && activity != null) {
+            SessionLogoutHelper.handleSessionExpired(activity);
+            return true;
+        }
+        return false;
     }
 }

@@ -121,6 +121,9 @@ public class fragmento_secretaria_saldo extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             Toast.makeText(getContext(), R.string.no_existe, Toast.LENGTH_SHORT).show();
         });
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
@@ -160,6 +163,9 @@ public class fragmento_secretaria_saldo extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             Toast.makeText(getContext(), "ALUMNO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
         });
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
@@ -187,6 +193,9 @@ public class fragmento_secretaria_saldo extends Fragment {
             nombre_alumno.setText("--");
         }, error -> {
             if (!isAdded() || getContext() == null) {
+                return;
+            }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
                 return;
             }
             Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo realizar la recarga"), Toast.LENGTH_SHORT).show();

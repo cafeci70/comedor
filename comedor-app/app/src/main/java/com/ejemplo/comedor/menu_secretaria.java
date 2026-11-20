@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.ejemplo.comedor.fragmento_general.fragmento_horario;
-import com.ejemplo.comedor.fragmento_secretaria.fragmento_secretaria_ayuda;
 import com.ejemplo.comedor.fragmento_secretaria.fragmento_secretaria_horario;
 import com.ejemplo.comedor.fragmento_secretaria.fragmento_secretaria_inicio;
 import com.ejemplo.comedor.fragmento_secretaria.fragmento_secretaria_perfil;
@@ -131,8 +130,6 @@ public class menu_secretaria extends AppCompatActivity implements NavigationView
             cargar_fragmento(new fragmento_secretaria_reporte_stock());
         } else if (id == R.id.report_horario) {
             cargar_fragmento(new fragmento_secretaria_reporte_horario());
-        } else if (id == R.id.nav_share) {
-            cargar_fragmento(new fragmento_secretaria_ayuda());
         } else if (id == R.id.nav_send) {
             cargar_fragmento(new fragmento_horario());
         }

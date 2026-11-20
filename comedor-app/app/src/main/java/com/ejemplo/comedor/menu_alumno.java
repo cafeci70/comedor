@@ -177,6 +177,9 @@ public class menu_alumno extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         }, error -> {
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                stopSaldoPolling();
+            }
         });
         jsonArrayRequest.setTag(POLL_SALDO_TAG);
         VolleySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);

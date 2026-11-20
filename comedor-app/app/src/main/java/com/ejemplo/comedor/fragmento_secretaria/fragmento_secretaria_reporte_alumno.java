@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -112,6 +113,9 @@ public class fragmento_secretaria_reporte_alumno extends Fragment {
 
         }, error -> {
             if (!isAdded() || getContext() == null) {
+                return;
+            }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
                 return;
             }
             btn_editar_saldo.setVisibility(View.INVISIBLE);

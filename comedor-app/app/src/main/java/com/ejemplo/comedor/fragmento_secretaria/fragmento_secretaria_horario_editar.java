@@ -111,6 +111,9 @@ public class fragmento_secretaria_horario_editar extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             Toast.makeText(getContext(), ApiResponseHelper.extractErrorMessage(error, "No se pudo actualizar el menú"), Toast.LENGTH_SHORT).show();
         }) {
             @Override

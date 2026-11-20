@@ -22,6 +22,23 @@ class conexion
             if (!$this->conn->set_charset('utf8mb4')) {
                 $this->conn->set_charset('utf8');
             }
+            $tzName = getenv('APP_TIMEZONE');
+            if ($tzName === false || trim($tzName) === '') {
+                $tzName = 'America/Lima';
+            }
+            @date_default_timezone_set($tzName);
+            try {
+                $tz = new DateTimeZone(date_default_timezone_get());
+                $offsetSeconds = $tz->getOffset(new DateTimeImmutable('now', new DateTimeZone('UTC')));
+                $sign = $offsetSeconds >= 0 ? '+' : '-';
+                $abs = abs($offsetSeconds);
+                $mysqlOffset = sprintf('%s%02d:%02d', $sign, (int) floor($abs / 3600), (int) floor(($abs % 3600) / 60));
+                if (!$this->conn->query("SET time_zone = '$mysqlOffset'")) {
+                    error_log('MySQL timezone sync error: ' . $this->conn->error);
+                }
+            } catch (Exception $e) {
+                error_log('Timezone sync error: ' . $e->getMessage());
+            }
         } elseif ($this->conn) {
             error_log('MySQL connection error (' . $this->conn->connect_errno . '): ' . $this->conn->connect_error);
         } else {

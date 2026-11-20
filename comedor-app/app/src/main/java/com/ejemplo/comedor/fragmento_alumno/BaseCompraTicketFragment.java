@@ -125,6 +125,9 @@ public abstract class BaseCompraTicketFragment extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             setNoVentaState();
         });
         VolleySingleton.getInstance(getContext()).addToRequestQueue(jsonArrayRequest);
@@ -146,6 +149,9 @@ public abstract class BaseCompraTicketFragment extends Fragment {
             reporteStock();
         }, error -> {
             if (!isAdded() || getContext() == null) {
+                return;
+            }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
                 return;
             }
             setNoVentaState();
@@ -193,6 +199,9 @@ public abstract class BaseCompraTicketFragment extends Fragment {
             if (!isAdded() || getContext() == null) {
                 return;
             }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
+                return;
+            }
             if (afterPurchase) {
                 Toast.makeText(getContext(), "No se pudo verificar la compra", Toast.LENGTH_SHORT).show();
                 reporteStock();
@@ -237,6 +246,9 @@ public abstract class BaseCompraTicketFragment extends Fragment {
             comprobarCompra(true);
         }, error -> {
             if (!isAdded() || getContext() == null) {
+                return;
+            }
+            if (ApiResponseHelper.handleUnauthorized(this, error)) {
                 return;
             }
             String msg = ApiResponseHelper.extractErrorMessage(error, "No se pudo procesar la compra");

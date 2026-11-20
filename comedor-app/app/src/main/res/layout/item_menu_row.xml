@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:id="@+id/tv_fecha"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_desayuno"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_alm_entrada"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_alm_postre"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_almuerzo"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_alm_bebida"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_cen_entrada"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_cen_postre"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_cena"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_cen_bebida"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:id="@+id/col_editar"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="6dp">
+
+        <Button
+            android:id="@+id/btn_row_editar"
+            style="@style/ComedorButtonSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:minHeight="36dp"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:text="Editar"
+            android:textSize="13sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/col_eliminar"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="6dp">
+
+        <Button
+            android:id="@+id/btn_row_eliminar"
+            style="@style/ComedorButtonSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:minHeight="36dp"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:text="Eliminar"
+            android:textSize="13sp" />
+    </FrameLayout>
+
+</LinearLayout>

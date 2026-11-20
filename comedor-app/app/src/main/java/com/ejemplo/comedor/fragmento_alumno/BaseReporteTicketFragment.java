@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.ejemplo.comedor.ApiResponseHelper;
 import com.ejemplo.comedor.R;
 import com.ejemplo.comedor.Url;
 import com.ejemplo.comedor.Variables_globales;
@@ -127,6 +128,9 @@ public abstract class BaseReporteTicketFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (!isAdded() || getContext() == null) {
+                    return;
+                }
+                if (ApiResponseHelper.handleUnauthorized(BaseReporteTicketFragment.this, error)) {
                     return;
                 }
                 Toast.makeText(getContext(), "ERROR EN LA BUSQUEDA", Toast.LENGTH_SHORT).show();
